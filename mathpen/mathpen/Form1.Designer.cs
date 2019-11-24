@@ -73,11 +73,25 @@
             this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.Table = new System.Windows.Forms.DataGridView();
+            this.i = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Hi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Xi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Vi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Viудв = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Vi_Viудв = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.S = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Viитог = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Умшага = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.УвШага = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Table)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -95,7 +109,6 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.DodgerBlue;
-            this.tabPage1.Controls.Add(this.panel1);
             this.tabPage1.Controls.Add(this.DoubNumLabel);
             this.tabPage1.Controls.Add(this.delNumLabel);
             this.tabPage1.Controls.Add(this.maxStepLabel);
@@ -557,7 +570,7 @@
             this.zedGraphControl2.BackColor = System.Drawing.Color.DarkOrange;
             this.zedGraphControl2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.zedGraphControl2.IsShowPointValues = false;
-            this.zedGraphControl2.Location = new System.Drawing.Point(892, 174);
+            this.zedGraphControl2.Location = new System.Drawing.Point(900, 174);
             this.zedGraphControl2.Name = "zedGraphControl2";
             this.zedGraphControl2.PointValueFormat = "G";
             this.zedGraphControl2.Size = new System.Drawing.Size(700, 700);
@@ -577,6 +590,7 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.tabPage2.Controls.Add(this.Table);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -587,6 +601,8 @@
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.Aqua;
+            this.tabPage3.Controls.Add(this.label17);
+            this.tabPage3.Controls.Add(this.pictureBox1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -594,27 +610,106 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Справка";
             // 
-            // panel1
+            // Table
             // 
-            this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
-            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.progressBar1);
-            this.panel1.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            this.panel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(5)));
-            this.panel1.Location = new System.Drawing.Point(650, 300);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(300, 300);
-            this.panel1.TabIndex = 42;
-            this.panel1.Visible = false;
+            this.Table.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.Table.BackgroundColor = System.Drawing.SystemColors.MenuHighlight;
+            this.Table.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.Table.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.i,
+            this.Hi,
+            this.Xi,
+            this.Vi,
+            this.Viудв,
+            this.Vi_Viудв,
+            this.S,
+            this.Viитог,
+            this.Умшага,
+            this.УвШага});
+            this.Table.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Table.Location = new System.Drawing.Point(3, 3);
+            this.Table.Name = "Table";
+            this.Table.RowHeadersWidth = 51;
+            this.Table.Size = new System.Drawing.Size(1586, 868);
+            this.Table.TabIndex = 2;
             // 
-            // progressBar1
+            // i
             // 
-            this.progressBar1.Location = new System.Drawing.Point(19, 194);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(261, 23);
-            this.progressBar1.TabIndex = 0;
-            this.progressBar1.Visible = false;
+            this.i.HeaderText = "i";
+            this.i.MinimumWidth = 6;
+            this.i.Name = "i";
+            // 
+            // Hi
+            // 
+            this.Hi.HeaderText = "Hi";
+            this.Hi.MinimumWidth = 6;
+            this.Hi.Name = "Hi";
+            // 
+            // Xi
+            // 
+            this.Xi.HeaderText = "Xi";
+            this.Xi.MinimumWidth = 6;
+            this.Xi.Name = "Xi";
+            // 
+            // Vi
+            // 
+            this.Vi.HeaderText = "Vi";
+            this.Vi.MinimumWidth = 6;
+            this.Vi.Name = "Vi";
+            // 
+            // Viудв
+            // 
+            this.Viудв.HeaderText = "Viудв";
+            this.Viудв.Name = "Viудв";
+            // 
+            // Vi_Viудв
+            // 
+            this.Vi_Viудв.HeaderText = "Vi - Viудв";
+            this.Vi_Viудв.Name = "Vi_Viудв";
+            // 
+            // S
+            // 
+            this.S.HeaderText = "S";
+            this.S.Name = "S";
+            // 
+            // Viитог
+            // 
+            this.Viитог.HeaderText = "Viитог";
+            this.Viитог.Name = "Viитог";
+            // 
+            // Умшага
+            // 
+            this.Умшага.HeaderText = "Ум. шага";
+            this.Умшага.Name = "Умшага";
+            this.Умшага.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // УвШага
+            // 
+            this.УвШага.HeaderText = "Ув. шага";
+            this.УвШага.Name = "УвШага";
+            this.УвШага.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
+            this.pictureBox1.Location = new System.Drawing.Point(8, 6);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(408, 119);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.BackColor = System.Drawing.Color.Ivory;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(5, 257);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(60, 20);
+            this.label17.TabIndex = 1;
+            this.label17.Text = "label17";
             // 
             // Form1
             // 
@@ -627,7 +722,11 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Table)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -677,8 +776,19 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.DataGridView Table;
+        private System.Windows.Forms.DataGridViewTextBoxColumn i;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Hi;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Xi;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Vi;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Viудв;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Vi_Viудв;
+        private System.Windows.Forms.DataGridViewTextBoxColumn S;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Viитог;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Умшага;
+        private System.Windows.Forms.DataGridViewTextBoxColumn УвШага;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

@@ -13,15 +13,19 @@ namespace mathpen
         public double v1 { set; get; }
         public double v2 { set; get; }
         public double v3 { set; get; }
+        public double vud { set; get; }
 
         public double h { set; get; }
         public double hMax { set; get; }
+        public double xHMax { set; get; }
         public double hMin { set; get; }
+        public double xHMin { set; get; }
         public double eps { set; get; }
 
         public double s { set; get; }
         public double diffV { set; get; }
         public double maxDiffV { set; get; }
+        public double xMaxDiffV { set; get; }
         public bool maxDiffChange{ set; get; }
         public int doubles { set; get; }
         public int divides { set; get; }
@@ -31,8 +35,18 @@ namespace mathpen
 
         public double v1_2 { set; get; }
         public Functions functions = new Functions();
-
-        private double TryStep(double _x, double _u1, double _u2, double _h, int _steps, bool save = false)
+        public void Ready()
+        {
+            maxDiffV = 0;
+            doubles = 0;
+            divides = 0;
+        }
+        public double getVud(double _h, int _it)
+        {
+            vud = TryStep(x, v1, v2, _h, _it);
+            return vud;
+        }
+        public double TryStep(double _x, double _u1, double _u2, double _h, int _steps, bool save = false)
         {
             double curX = _x;
             double curU1 = _u1;
@@ -57,7 +71,7 @@ namespace mathpen
                 x = curX;
                 v1 = curU1;
                 v2 = curU2;
-                v3 = functions.f1(curX, curU1, curU2);
+                v3 = functions.f2(curX, curU1, curU2);
             }
             return curU1;
         }
@@ -97,9 +111,18 @@ namespace mathpen
                     doubles++;
                 }
             }
+            if (h > hMax)
+            {
+                hMax = h;
+            }
+            if (h < hMin)
+            {
+                hMin = h;
+            }
             if (diffV > maxDiffV)
             {
                 maxDiffV = diffV;
+                xMaxDiffV = x;
                 maxDiffChange = true;
             }
             else

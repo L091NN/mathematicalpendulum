@@ -25,8 +25,7 @@ namespace mathpen
             pane2 = zedGraphControl2.GraphPane;
             this.ClientSize = new System.Drawing.Size(1600, 900);
             this.tabControl1.Size = new System.Drawing.Size(this.ClientSize.Width, this.ClientSize.Height);
-            this.panel1.Hide();
-            this.progressBar1.Hide();
+            //this.panel2.Hide();
             this.checkBox1.Text = "Очищать график";
             this.checkBox2.Text = "Очищать график";
             this.comboBox1.Text = this.comboBox1.Items[0].ToString();
@@ -42,6 +41,8 @@ namespace mathpen
             this.textBoxE.Text = (0.0001).ToString();
             this.textBoxMaxH.Text = (1000).ToString();
             this.textBoxGrX.Text = (1.0).ToString();
+            pane1.Title = "";
+            pane2.Title = "";
         }
         protected override CreateParams CreateParams
         {
@@ -57,34 +58,78 @@ namespace mathpen
         }
 
         public PointPair WhatNeed1(double h)
-        {   
-            if(this.domainUpDown1.SelectedIndex == 1)
+        {
+            if (this.domainUpDown1.SelectedIndex == 1)
+            {
+                pane1.XAxis.Title = "X";
+                pane1.YAxis.Title = "U(x)";
                 return new PointPair(method.x, method.v1);
+            }
             if (this.domainUpDown1.SelectedIndex == 2)
+            {
+                pane1.XAxis.Title = "X";
+                pane1.YAxis.Title = "U'(x)";
                 return new PointPair(method.x, method.v2);
-            if (this.domainUpDown1.SelectedIndex == 3)
+            } if (this.domainUpDown1.SelectedIndex == 3)
+            {
+                pane1.XAxis.Title = "X";
+                pane1.YAxis.Title = "U''(x)";
                 return new PointPair(method.x, method.v3);
+            }
             if (this.domainUpDown1.SelectedIndex == 4)
+            {
+                pane1.XAxis.Title = "U(x)";
+                pane1.YAxis.Title = "U'(x)";
                 return new PointPair(method.v1, method.v2);
-            if (this.domainUpDown1.SelectedIndex == 5)
+            } if (this.domainUpDown1.SelectedIndex == 5)
+            {
+                pane1.XAxis.Title = "Номер шага";
+                pane1.YAxis.Title = "Погрешность";
                 return new PointPair(h, method.diffV);
+            }
             return new PointPair(0, 0);
         }
         public PointPair WhatNeed2(double h)
         {
             if (this.domainUpDown2.SelectedIndex == 1)
+            {
+                pane2.XAxis.Title = "X";
+                pane2.YAxis.Title = "U(x)";
                 return new PointPair(method.x, method.v1);
+            }          
             if (this.domainUpDown2.SelectedIndex == 2)
+            {
+                pane2.XAxis.Title = "X";
+                pane2.YAxis.Title = "U'(x)";
                 return new PointPair(method.x, method.v2);
+            }
             if (this.domainUpDown2.SelectedIndex == 3)
+            {
+                pane2.XAxis.Title = "X";
+                pane2.YAxis.Title = "U''(x)";
                 return new PointPair(method.x, method.v3);
+            } 
             if (this.domainUpDown2.SelectedIndex == 4)
+            {
+                pane2.XAxis.Title = "U(x)";
+                pane2.YAxis.Title = "U'(x)";
                 return new PointPair(method.v1, method.v2);
+            }
             if (this.domainUpDown2.SelectedIndex == 5)
+            {
+                pane2.XAxis.Title = "Номер шага";
+                pane2.YAxis.Title = "Погрешность";
                 return new PointPair(h, method.diffV);
+            }
             return new PointPair(0, 0);
         }
-
+        void InitInfoLabel()
+        {
+            label17.Text =
+            "Начальные условия: Xo = " + textBoxX0.Text + ", Uo = " + textBoxU0.Text + ", U'o = " + textBoxdU0.Text + ", ho = " + textBoxH.Text + ", L = " + textBoxL.Text +
+            ", g = " + textBoxG.Text + ", ε = " + textBoxE.Text + "\n" +
+            "max |S| = " + (method.maxDiffV / 8.0) + " при x = " + (method.xMaxDiffV);
+        }
         public bool RUN()
         {
             //чек нужных графиков
@@ -94,6 +139,7 @@ namespace mathpen
             //запись элементов в массивы
             //чек цвета
             //рисовка
+            Table.Rows.Clear();
             if (checkBox1.Checked)
             pane1.CurveList.Clear();
             if (checkBox2.Checked)
@@ -103,22 +149,55 @@ namespace mathpen
             method.v1 = double.Parse(textBoxU0.Text);
             method.v2 = double.Parse(this.textBoxdU0.Text);
             method.x = double.Parse(this.textBoxX0.Text);
+            method.xMax = method.x;
             method.h = double.Parse(this.textBoxH.Text);
+            method.hMax = method.h;
+            method.hMin = method.h;
             method.functions.L = double.Parse(this.textBoxL.Text);
             method.functions.g = double.Parse(this.textBoxG.Text);
             method.eps = double.Parse(this.textBoxE.Text);
             steps = int.Parse(this.textBoxMaxH.Text);
             method.xMax = double.Parse(this.textBoxGrX.Text);
-            progressBar1.Value++;
-
+            method.Ready();
+            if (domainUpDown1.SelectedIndex != 0 || domainUpDown2.SelectedIndex != 0)
             for (int curH = 0; curH < steps; curH++)
             {
+                List<double> row = new List<double>();
+                row.Add(curH);
+                row.Add(method.h);
+                row.Add(method.x + method.h);
+                row.Add(method.getVud(method.h, 1));
+                row.Add(method.getVud(method.h / 2.0, 2));
+                row.Add(Math.Abs(method.getVud(method.h, 1) - method.getVud(method.h / 2.0, 2)));
+                row.Add(method.s);
                 method.OptimizationStep();
-                method.Step();
-                list1.Add(WhatNeed1(curH));
-                list2.Add(WhatNeed2(curH));
-            }
 
+                method.Step();
+                row.Add(method.v1);
+                row.Add(method.divides);
+                row.Add(method.doubles);
+                if (domainUpDown1.SelectedIndex != 0)
+                {
+                    list1.Add(WhatNeed1(curH));
+                }
+
+                if (domainUpDown2.SelectedIndex != 0)
+                {
+                    list2.Add(WhatNeed2(curH));
+                }
+                if (method.x > method.xMax - method.h)
+                {
+                    break;
+                }
+                Table.Rows.Add(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9]);
+            }
+            InitInfoLabel();
+            DoubNumLabel.Text = method.doubles.ToString();
+            delNumLabel.Text = method.divides.ToString();
+            maxStepLabel.Text = method.hMax.ToString();
+            minStepLabel.Text = method.hMin.ToString();
+            MMLabel.Text = method.maxDiffV.ToString();
+            pointMMLabel.Text = method.xMaxDiffV.ToString();
             LineItem li1 = pane1.AddCurve("", list1, color[comboBox1.SelectedIndex], SymbolType.None);
             LineItem li2 = pane2.AddCurve("", list2, color[comboBox2.SelectedIndex], SymbolType.None);
             zedGraphControl1.AxisChange();
@@ -132,14 +211,13 @@ namespace mathpen
         {
             //запуск прогресбара
             //конец
-            this.panel1.Visible = true;
-            this.progressBar1.Value = 0;
-            this.progressBar1.Visible = true;
+            //this.panel1.Visible = true;
+            //this.progressBar1.Value = 0;
+            //this.progressBar1.Visible = true;
 
             RUN();
-
-            this.progressBar1.Visible = false;
-            this.panel1.Visible = false;
+            //progressBar1.Value = progressBar1.Maximum;
+            //this.panel2.Visible = false;
         }
     }
 }
