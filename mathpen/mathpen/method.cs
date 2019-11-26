@@ -83,9 +83,9 @@ namespace mathpen
             v1_2 = _u;
             _u = TryStep(x, v1, v2, h / 2.0, 1);
             diffV = Math.Abs(_u - u);
-            s = diffV / 8.0;
+            s = diffV / 15.0;
 
-            while (s > eps || s < eps / 16.0)
+            while (s > eps || s < eps / 32.0)
             {
                 if (s > eps)
                 {
@@ -95,11 +95,11 @@ namespace mathpen
                     v1_2 = _u;
                     _u = TryStep(x, v1, v2, h / 2.0, 1);
                     diffV = Math.Abs(_u - u);
-                    s = diffV / 8.0;
+                    s = diffV / 15.0;
                     divides++;
                     continue;
                 }
-                if (s < eps / 16.0)
+                if (s < eps / 32.0)
                 {
                     h *= 2;
                     u = TryStep(x, v1, v2, h, 1);
@@ -107,7 +107,7 @@ namespace mathpen
                     v1_2 = _u;
                     _u = TryStep(x, v1, v2, h / 2.0, 1);
                     diffV = Math.Abs(_u - u);
-                    s = diffV / 8.0;
+                    s = diffV / 15.0;
                     doubles++;
                 }
             }

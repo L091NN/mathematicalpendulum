@@ -18,12 +18,29 @@ namespace mathpen
         GraphPane pane2;
         int steps;
         public Method method = new Method();
+        PointPairList list1 = new PointPairList();
+        PointPairList list2 = new PointPairList();
+        List<double> x = new List<double>();
+        List<double> u = new List<double>();
+        List<double> us = new List<double>();
+        List<double> uss = new List<double>();
+        List<double> er = new List<double>();
+
+        void clearList()
+        {
+            x.Clear();
+            u.Clear();
+            us.Clear();
+            uss.Clear();
+            er.Clear();
+        }
+
         public Form1()
         {
             InitializeComponent();
             pane1 = zedGraphControl1.GraphPane;
             pane2 = zedGraphControl2.GraphPane;
-            this.ClientSize = new System.Drawing.Size(1600, 900);
+            this.ClientSize = new System.Drawing.Size(1600, 1000);
             this.tabControl1.Size = new System.Drawing.Size(this.ClientSize.Width, this.ClientSize.Height);
             //this.panel2.Hide();
             this.checkBox1.Text = "Очищать график";
@@ -57,78 +74,12 @@ namespace mathpen
             }
         }
 
-        public PointPair WhatNeed1(double h)
-        {
-            if (this.domainUpDown1.SelectedIndex == 1)
-            {
-                pane1.XAxis.Title = "X";
-                pane1.YAxis.Title = "U(x)";
-                return new PointPair(method.x, method.v1);
-            }
-            if (this.domainUpDown1.SelectedIndex == 2)
-            {
-                pane1.XAxis.Title = "X";
-                pane1.YAxis.Title = "U'(x)";
-                return new PointPair(method.x, method.v2);
-            } if (this.domainUpDown1.SelectedIndex == 3)
-            {
-                pane1.XAxis.Title = "X";
-                pane1.YAxis.Title = "U''(x)";
-                return new PointPair(method.x, method.v3);
-            }
-            if (this.domainUpDown1.SelectedIndex == 4)
-            {
-                pane1.XAxis.Title = "U(x)";
-                pane1.YAxis.Title = "U'(x)";
-                return new PointPair(method.v1, method.v2);
-            } if (this.domainUpDown1.SelectedIndex == 5)
-            {
-                pane1.XAxis.Title = "Номер шага";
-                pane1.YAxis.Title = "Погрешность";
-                return new PointPair(h, method.diffV);
-            }
-            return new PointPair(0, 0);
-        }
-        public PointPair WhatNeed2(double h)
-        {
-            if (this.domainUpDown2.SelectedIndex == 1)
-            {
-                pane2.XAxis.Title = "X";
-                pane2.YAxis.Title = "U(x)";
-                return new PointPair(method.x, method.v1);
-            }          
-            if (this.domainUpDown2.SelectedIndex == 2)
-            {
-                pane2.XAxis.Title = "X";
-                pane2.YAxis.Title = "U'(x)";
-                return new PointPair(method.x, method.v2);
-            }
-            if (this.domainUpDown2.SelectedIndex == 3)
-            {
-                pane2.XAxis.Title = "X";
-                pane2.YAxis.Title = "U''(x)";
-                return new PointPair(method.x, method.v3);
-            } 
-            if (this.domainUpDown2.SelectedIndex == 4)
-            {
-                pane2.XAxis.Title = "U(x)";
-                pane2.YAxis.Title = "U'(x)";
-                return new PointPair(method.v1, method.v2);
-            }
-            if (this.domainUpDown2.SelectedIndex == 5)
-            {
-                pane2.XAxis.Title = "Номер шага";
-                pane2.YAxis.Title = "Погрешность";
-                return new PointPair(h, method.diffV);
-            }
-            return new PointPair(0, 0);
-        }
         void InitInfoLabel()
         {
             label17.Text =
             "Начальные условия: Xo = " + textBoxX0.Text + ", Uo = " + textBoxU0.Text + ", U'o = " + textBoxdU0.Text + ", ho = " + textBoxH.Text + ", L = " + textBoxL.Text +
             ", g = " + textBoxG.Text + ", ε = " + textBoxE.Text + "\n" +
-            "max |S| = " + (method.maxDiffV / 8.0) + " при x = " + (method.xMaxDiffV);
+            "max |S| = " + (method.maxDiffV / 15.0) + " при x = " + (method.xMaxDiffV);
         }
         public bool RUN()
         {
@@ -144,8 +95,8 @@ namespace mathpen
             pane1.CurveList.Clear();
             if (checkBox2.Checked)
                 pane2.CurveList.Clear();
-            PointPairList list1 = new PointPairList();
-            PointPairList list2 = new PointPairList();
+            clearList();
+            
             method.v1 = double.Parse(textBoxU0.Text);
             method.v2 = double.Parse(this.textBoxdU0.Text);
             method.x = double.Parse(this.textBoxX0.Text);
@@ -159,6 +110,11 @@ namespace mathpen
             steps = int.Parse(this.textBoxMaxH.Text);
             method.xMax = double.Parse(this.textBoxGrX.Text);
             method.Ready();
+            x.Add(method.x);
+            u.Add(method.v1);
+            us.Add(method.v2);
+            uss.Add(method.v3);
+            er.Add(method.diffV);
             if (domainUpDown1.SelectedIndex != 0 || domainUpDown2.SelectedIndex != 0)
             for (int curH = 0; curH < steps; curH++)
             {
@@ -176,15 +132,12 @@ namespace mathpen
                 row.Add(method.v1);
                 row.Add(method.divides);
                 row.Add(method.doubles);
-                if (domainUpDown1.SelectedIndex != 0)
-                {
-                    list1.Add(WhatNeed1(curH));
-                }
+                x.Add(method.x);
+                u.Add(method.v1);
+                us.Add(method.v2);
+                uss.Add(method.v3);
+                er.Add(method.diffV);
 
-                if (domainUpDown2.SelectedIndex != 0)
-                {
-                    list2.Add(WhatNeed2(curH));
-                }
                 if (method.x > method.xMax - method.h)
                 {
                     break;
@@ -198,26 +151,102 @@ namespace mathpen
             minStepLabel.Text = method.hMin.ToString();
             MMLabel.Text = method.maxDiffV.ToString();
             pointMMLabel.Text = method.xMaxDiffV.ToString();
-            LineItem li1 = pane1.AddCurve("", list1, color[comboBox1.SelectedIndex], SymbolType.None);
-            LineItem li2 = pane2.AddCurve("", list2, color[comboBox2.SelectedIndex], SymbolType.None);
-            zedGraphControl1.AxisChange();
-            zedGraphControl1.Invalidate();
-            zedGraphControl2.AxisChange();
-            zedGraphControl2.Invalidate();
+
             return true;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //запуск прогресбара
-            //конец
-            //this.panel1.Visible = true;
-            //this.progressBar1.Value = 0;
-            //this.progressBar1.Visible = true;
 
-            RUN();
-            //progressBar1.Value = progressBar1.Maximum;
-            //this.panel2.Visible = false;
+
+            if (RUN())
+            {
+                DrawPane1();
+                DrawPane2();
+            }
+
+        }
+        void DrawPane1()
+        {
+            Draw(zedGraphControl1, pane1, GetPoints(GetAbciss(domainUpDown1.SelectedIndex), GetOrdinate(domainUpDown1.SelectedIndex)),
+            checkBox1, comboBox1, abciss[domainUpDown1.SelectedIndex], ordinat[domainUpDown1.SelectedIndex]);
+        }
+
+        void DrawPane2()
+        {
+            Draw(zedGraphControl2, pane2, GetPoints(GetAbciss(domainUpDown2.SelectedIndex), GetOrdinate(domainUpDown2.SelectedIndex)),
+            checkBox2, comboBox2, abciss[domainUpDown2.SelectedIndex], ordinat[domainUpDown2.SelectedIndex]);
+        }
+        void Draw( ZedGraphControl zgc, GraphPane gp, PointPairList _ppl,  CheckBox cb,  ComboBox cob, string XAxis, string YAxis)
+        {
+            if (cb.Checked)
+            {
+                gp.CurveList.Clear();
+            }
+            gp.XAxis.Title = XAxis;
+            gp.YAxis.Title = YAxis;
+            gp.AddCurve("", _ppl, color[cob.SelectedIndex], SymbolType.None);
+            zgc.AxisChange();
+            zgc.Invalidate();
+
+        }
+        string[] abciss = { "" , "X" , "X" , "X" , "U(x)" , "Номер шага" };
+        string[] ordinat = { "" , "U(x)", "U'(x)", "U''(x)", "U'(x)", "Погрешность" };
+        private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
+        {
+            DrawPane1();
+        }
+        private void domainUpDown2_SelectedItemChanged(object sender, EventArgs e)
+        {
+            DrawPane2();
+        }
+        List<double> GetAbciss(int numCB)
+        {
+            switch(numCB)
+            {
+                case 1: 
+                case 2:
+                case 3: return x;
+                case 4: return u;
+                case 5: return x;
+                default:
+                    return new List<double>();
+            }
+            
+        }
+        List<double> GetOrdinate(int numCB)
+        {
+            switch (numCB)
+            {
+                case 1:return u;
+                case 2:return us;
+                case 3: return uss;
+                case 4: return us;
+                case 5: return er;
+                default:
+                    return new List<double>();
+            }
+
+        }
+        PointPairList GetPoints(List<double> abciss, List<double> ordinat)
+        {
+            double[] abc = new double[abciss.Count];
+            int i = 0;
+            foreach (double abci in abciss)
+            {
+                abc[i] = abci;
+                i++;
+            }
+            double[] ord = new double[ordinat.Count];
+            i = 0;
+            foreach(double ordi in ordinat)
+            {
+                ord[i] = ordi;
+                i++;
+            }
+            if (abc.Length > 0) 
+            return new PointPairList(abc, ord);
+            return new PointPairList();
         }
     }
 }
