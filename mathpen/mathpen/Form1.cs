@@ -55,7 +55,7 @@ namespace mathpen
             this.textBoxH.Text = (0.001).ToString();
             this.textBoxL.Text = (0.1).ToString();
             this.textBoxG.Text = (9.8).ToString();
-            this.textBoxE.Text = (0.0001).ToString();
+            this.textBoxE.Text = (0.001).ToString();
             this.textBoxMaxH.Text = (1000).ToString();
             this.textBoxGrX.Text = (1.0).ToString();
             pane1.Title = "";
@@ -190,8 +190,8 @@ namespace mathpen
             zgc.Invalidate();
 
         }
-        string[] abciss = { "" , "X" , "X" , "X" , "U(x)" , "Номер шага" };
-        string[] ordinat = { "" , "U(x)", "U'(x)", "U''(x)", "U'(x)", "Погрешность" };
+        string[] abciss = { "" , "X" , "X" , "X" , "U" , "Номер шага" };
+        string[] ordinat = { "" , "U(x)", "U'(x)", "U''(x)", "U'", "Погрешность" };
         private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
         {
             DrawPane1();

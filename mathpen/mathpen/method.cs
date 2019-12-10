@@ -79,33 +79,27 @@ namespace mathpen
         public void OptimizationStep()
         {
             double u = TryStep(x, v1, v2, h, 1);
-            double _u = TryStep(x, v1, v2, h / 2.0, 1);
-            v1_2 = _u;
-            _u = TryStep(x, v1, v2, h / 2.0, 1);
+            double _u = TryStep(x, v1, v2, h / 2.0, 2);
             diffV = Math.Abs(_u - u);
             s = diffV / 15.0;
 
-            while (s > eps || s < eps / 32.0)
+            while (s > eps || s < (eps / 32.0))
             {
                 if (s > eps)
                 {
                     h /= 2;
                     u = TryStep(x, v1, v2, h, 1);
-                    _u = TryStep(x, v1, v2, h / 2.0, 1);
-                    v1_2 = _u;
-                    _u = TryStep(x, v1, v2, h / 2.0, 1);
+                    _u = TryStep(x, v1, v2, h / 2.0, 2);
                     diffV = Math.Abs(_u - u);
                     s = diffV / 15.0;
                     divides++;
                     continue;
                 }
-                if (s < eps / 32.0)
+                if (s < (eps / 32.0))
                 {
                     h *= 2;
                     u = TryStep(x, v1, v2, h, 1);
-                    _u = TryStep(x, v1, v2, h / 2.0, 1);
-                    v1_2 = _u;
-                    _u = TryStep(x, v1, v2, h / 2.0, 1);
+                    _u = TryStep(x, v1, v2, h / 2.0, 2);
                     diffV = Math.Abs(_u - u);
                     s = diffV / 15.0;
                     doubles++;
