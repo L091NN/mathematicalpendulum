@@ -19,6 +19,7 @@ namespace mathematicalpendulum
             InitializeComponent();
             Start();
             CloseSidebar();
+            Begin();
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -37,22 +38,24 @@ namespace mathematicalpendulum
             {
                 Running();
             }
+            FillFields();
+            met.Run(dataGridView1);
+            Draw();
         }
 
         private void buttonParam_Click(object sender, EventArgs e)
         {
-            if (sidebarOpen)
+            sidebarOpen = true;
+            OpenSidebar();
+            if (isVisibleParamPanel)
             {
-                if (isVisibleParamPanel)
-                {
-                    panelParam.Visible = false;
-                    isVisibleParamPanel = false;
-                }
-                else
-                {
-                    panelParam.Visible = true;
-                    isVisibleParamPanel = true;
-                }
+                panelParam.Visible = false;
+                isVisibleParamPanel = false;
+            }
+            else
+            {
+                panelParam.Visible = true;
+                isVisibleParamPanel = true;
             }
         }
 
@@ -74,6 +77,7 @@ namespace mathematicalpendulum
         private void buttonClear_Click(object sender, EventArgs e)
         {
             Start();
+            Clear();
         }
 
         private void buttonMenu_Click(object sender, EventArgs e)
